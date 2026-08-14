@@ -1,1 +1,754 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Sharjeel Ludo</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+font-family:Arial,sans-serif;
+background:#080a12;
+color:#fff;
+min-height:100vh
+}
+button{font-family:inherit;cursor:pointer}
+.hidden{display:none!important}
+
+/* LOGIN */
+#login{
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:20px;
+background:radial-gradient(circle at top,#38316e,#080a12 60%)
+}
+.loginbox{
+width:100%;
+max-width:400px;
+padding:35px 25px;
+border-radius:28px;
+text-align:center;
+background:rgba(255,255,255,.08);
+border:1px solid rgba(255,255,255,.12);
+box-shadow:0 20px 80px rgba(0,0,0,.45)
+}
+.logo{font-size:75px}
+.loginbox h1{margin:10px 0;font-size:27px}
+.loginbox p{color:#aaa;margin-bottom:28px}
+.google{
+width:100%;
+padding:15px;
+border:0;
+border-radius:14px;
+font-weight:bold;
+font-size:16px
+}
+.google span{margin-right:10px}
+
+/* APP */
+#app{min-height:100vh}
+header{
+max-width:1100px;
+margin:auto;
+padding:18px;
+display:flex;
+align-items:center;
+justify-content:space-between
+}
+.profile{
+display:flex;
+gap:10px;
+align-items:center
+}
+.profile img{
+width:48px;
+height:48px;
+border-radius:50%
+}
+.profile small{
+display:block;
+color:#888;
+margin-top:4px
+}
+.coins{
+background:#191b2a;
+padding:11px 17px;
+border-radius:30px;
+color:#ffd84d;
+font-weight:bold
+}
+main{
+max-width:1100px;
+margin:auto;
+padding:10px 18px 40px
+}
+.hero{
+padding:28px;
+border-radius:25px;
+background:linear-gradient(135deg,#28205d,#15192f);
+display:flex;
+align-items:center;
+justify-content:space-between
+}
+.hero span{
+font-size:12px;
+color:#aaa;
+letter-spacing:2px
+}
+.hero h2{margin:8px 0}
+.hero p{color:#aaa}
+.hero .dice{font-size:75px}
+.grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:15px;
+margin-top:20px
+}
+.card{
+border:1px solid rgba(255,255,255,.07);
+background:#151827;
+color:white;
+padding:20px;
+border-radius:20px;
+text-align:left
+}
+.card:hover{background:#20243a}
+.card b,.card small{display:block}
+.card small{color:#888;margin-top:6px}
+.icon{font-size:35px;margin-bottom:15px}
+.wallet{
+margin-top:25px;
+padding:20px;
+border-radius:20px;
+background:#151827;
+display:flex;
+justify-content:space-between;
+align-items:center
+}
+.wallet small{color:#888}
+.wallet strong{
+display:block;
+font-size:25px;
+color:#ffd84d;
+margin-top:5px
+}
+.topup{
+border:0;
+padding:13px 20px;
+border-radius:12px;
+background:#6c5ce7;
+color:white;
+font-weight:bold
+}
+.logout{
+margin-top:20px;
+padding:11px 20px;
+border:0;
+border-radius:10px;
+background:#292c3d;
+color:#fff
+}
+
+/* GAME */
+#game{
+padding:15px;
+max-width:600px;
+margin:auto
+}
+.gamehead{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:15px
+}
+.back{
+border:0;
+background:#202333;
+color:#fff;
+padding:10px 15px;
+border-radius:10px
+}
+.board{
+width:min(92vw,520px);
+height:min(92vw,520px);
+margin:auto;
+display:grid;
+grid-template-columns:repeat(15,1fr);
+grid-template-rows:repeat(15,1fr);
+background:#eee;
+border:7px solid #191b28;
+border-radius:18px;
+overflow:hidden
+}
+.cell{
+border:1px solid rgba(0,0,0,.1);
+background:#fff
+}
+.red{background:#ff6b6b}
+.green{background:#5be88a}
+.yellow{background:#ffe46b}
+.blue{background:#62a8ff}
+.safe{background:#ddd}
+.center{
+background:linear-gradient(45deg,#ff5b5b 50%,#5b8dff 50%)
+}
+.token{
+width:75%;
+height:75%;
+margin:12%;
+border-radius:50%;
+border:3px solid #fff;
+box-shadow:0 3px 7px #0007
+}
+.redtoken{background:#e63946}
+.bluetoken{background:#247bff}
+.controls{
+text-align:center;
+margin-top:18px
+}
+#roll{
+font-size:20px;
+padding:14px 30px;
+border:0;
+border-radius:15px;
+background:#6c5ce7;
+color:white;
+font-weight:bold
+}
+#number{
+font-size:35px;
+margin:12px
+}
+.stickers{
+display:flex;
+justify-content:center;
+gap:8px;
+margin-top:15px
+}
+.sticker{
+font-size:28px;
+background:#191b2a;
+border:0;
+padding:8px;
+border-radius:12px
+}
+
+/* MODAL */
+.modal{
+position:fixed;
+inset:0;
+background:#0009;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:20px;
+z-index:10
+}
+.modalbox{
+width:100%;
+max-width:400px;
+background:#171a29;
+padding:25px;
+border-radius:22px;
+text-align:center
+}
+.modalbox h2{margin-bottom:15px}
+.stickerlist{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:10px
+}
+.stickerlist button{
+font-size:30px;
+padding:10px;
+border:0;
+border-radius:12px;
+background:#252a40
+}
+.close{
+margin-top:20px;
+padding:10px 20px;
+border:0;
+border-radius:10px;
+background:#33384e;
+color:#fff
+}
+
+@media(max-width:700px){
+.grid{grid-template-columns:repeat(2,1fr)}
+.hero h2{font-size:22px}
+.hero .dice{font-size:55px}
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<section id="login">
+<div class="loginbox">
+<div class="logo">🎲</div>
+<h1>SHARJEEL LUDO</h1>
+<p>Play • Challenge • Enjoy</p>
+
+<button id="googleLogin" class="google">
+<span>G</span> Continue with Google
+</button>
+
+<p style="margin-top:18px;font-size:12px">
+Secure Firebase Authentication
+</p>
+</div>
+</section>
+
+
+<!-- HOME -->
+<section id="app" class="hidden">
+
+<header>
+<div class="profile">
+<img id="photo">
+<div>
+<strong id="name">Player</strong>
+<small id="email"></small>
+</div>
+</div>
+
+<div class="coins">
+🪙 <span id="coins">0</span>
+</div>
+</header>
+
+<main>
+
+<div class="hero">
+<div>
+<span>WELCOME BACK</span>
+<h2>Ready to Play? 🎲</h2>
+<p>Challenge your friends.</p>
+</div>
+<div class="dice">🎲</div>
+</div>
+
+<div class="grid">
+
+<button class="card" id="play">
+<div class="icon">🎮</div>
+<b>Play Ludo</b>
+<small>Start a game</small>
+</button>
+
+<button class="card" id="online">
+<div class="icon">🌐</div>
+<b>Online</b>
+<small>Multiplayer rooms</small>
+</button>
+
+<button class="card" id="stick">
+<div class="icon">😎</div>
+<b>Stickers</b>
+<small>Send stickers</small>
+</button>
+
+<button class="card" id="leader">
+<div class="icon">🏆</div>
+<b>Leaderboard</b>
+<small>Top players</small>
+</button>
+
+</div>
+
+<div class="wallet">
+<div>
+<small>MY WALLET</small>
+<strong>🪙 <span id="wallet">0</span></strong>
+</div>
+<button class="topup" id="topup">＋ TOP UP</button>
+</div>
+
+<button class="logout" id="logout">Logout</button>
+
+</main>
+</section>
+
+
+<!-- GAME -->
+<section id="game" class="hidden">
+
+<div class="gamehead">
+<button class="back" id="back">← Home</button>
+<h2>🎲 Ludo</h2>
+</div>
+
+<div class="board" id="board"></div>
+
+<div class="controls">
+
+<div id="turn">Player 1 Turn</div>
+
+<div id="number">🎲</div>
+
+<button id="roll">ROLL DICE</button>
+
+<div class="stickers">
+<button class="sticker">😂</button>
+<button class="sticker">😎</button>
+<button class="sticker">🔥</button>
+<button class="sticker">👏</button>
+<button class="sticker">😡</button>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- STICKER MODAL -->
+<div id="modal" class="modal hidden">
+
+<div class="modalbox">
+
+<h2>😎 Stickers</h2>
+
+<div class="stickerlist">
+<button>😂</button>
+<button>🤣</button>
+<button>😎</button>
+<button>🔥</button>
+<button>❤️</button>
+<button>👏</button>
+<button>😡</button>
+<button>🎉</button>
+</div>
+
+<button class="close" id="close">Close</button>
+
+</div>
+</div>
+
+
+<script type="module">
+
+import {initializeApp}
+from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+import {
+getAuth,
+GoogleAuthProvider,
+signInWithPopup,
+onAuthStateChanged,
+signOut
+}
+from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+import {
+getDatabase,
+ref,
+set,
+get,
+onValue
+}
+from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
+
+
+/* FIREBASE */
+
+const firebaseConfig={
+
+apiKey:"AIzaSyCHZvinIj4RONUUEeio8tduzXeB6C6MqBI",
+
+authDomain:"ludo-196ea.firebaseapp.com",
+
+projectId:"ludo-196ea",
+
+storageBucket:"ludo-196ea.firebasestorage.app",
+
+messagingSenderId:"401647143807",
+
+appId:"1:401647143807:web:c15e33f060e49853bb684a",
+
+measurementId:"G-Y1Z84L97LY",
+
+databaseURL:"https://ludo-196ea-default-rtdb.firebaseio.com"
+
+};
+
+const app=initializeApp(firebaseConfig);
+
+const auth=getAuth(app);
+
+const db=getDatabase(app);
+
+const provider=new GoogleAuthProvider();
+
+
+/* ELEMENTS */
+
+const login=document.getElementById("login");
+
+const home=document.getElementById("app");
+
+const game=document.getElementById("game");
+
+const modal=document.getElementById("modal");
+
+const google=document.getElementById("googleLogin");
+
+const coins=document.getElementById("coins");
+
+const wallet=document.getElementById("wallet");
+
+
+/* GOOGLE LOGIN */
+
+google.onclick=async()=>{
+
+try{
+
+google.disabled=true;
+
+google.textContent="Signing in...";
+
+await signInWithPopup(auth,provider);
+
+}catch(e){
+
+alert("Login failed: "+e.message);
+
+google.disabled=false;
+
+google.innerHTML="<span>G</span> Continue with Google";
+
+}
+
+};
+
+
+/* AUTH */
+
+onAuthStateChanged(auth,async user=>{
+
+if(!user){
+
+login.classList.remove("hidden");
+
+home.classList.add("hidden");
+
+game.classList.add("hidden");
+
+return;
+
+}
+
+login.classList.add("hidden");
+
+home.classList.remove("hidden");
+
+document.getElementById("name").textContent=
+user.displayName||"Player";
+
+document.getElementById("email").textContent=
+user.email||"";
+
+document.getElementById("photo").src=
+user.photoURL||
+"https://ui-avatars.com/api/?name=Player";
+
+
+const userRef=ref(db,"users/"+user.uid);
+
+const snap=await get(userRef);
+
+if(!snap.exists()){
+
+await set(userRef,{
+
+name:user.displayName||"Player",
+
+email:user.email||"",
+
+photo:user.photoURL||"",
+
+coins:0,
+
+stickers:["😂","😎","🔥"],
+
+createdAt:Date.now()
+
+});
+
+}
+
+onValue(userRef,s=>{
+
+const data=s.val()||{};
+
+const c=Number(data.coins||0);
+
+coins.textContent=c;
+
+wallet.textContent=c;
+
+});
+
+});
+
+
+/* LOGOUT */
+
+document.getElementById("logout").onclick=()=>signOut(auth);
+
+
+/* GAME */
+
+document.getElementById("play").onclick=()=>{
+
+home.classList.add("hidden");
+
+game.classList.remove("hidden");
+
+createBoard();
+
+};
+
+
+document.getElementById("back").onclick=()=>{
+
+game.classList.add("hidden");
+
+home.classList.remove("hidden");
+
+};
+
+
+/* ONLINE */
+
+document.getElementById("online").onclick=()=>{
+
+alert("Online multiplayer will be connected with Firebase rooms in the next version.");
+
+};
+
+
+/* LEADERBOARD */
+
+document.getElementById("leader").onclick=()=>{
+
+alert("Leaderboard system will be connected with Firebase.");
+
+};
+
+
+/* TOPUP */
+
+document.getElementById("topup").onclick=()=>{
+
+alert(
+"Top-Up System\n\n"+
+"Secure payment verification will be connected through the backend."
+);
+
+};
+
+
+/* STICKERS */
+
+document.getElementById("stick").onclick=()=>{
+
+modal.classList.remove("hidden");
+
+};
+
+document.getElementById("close").onclick=()=>{
+
+modal.classList.add("hidden");
+
+};
+
+
+/* STICKER SEND */
+
+document.querySelectorAll(".sticker").forEach(btn=>{
+
+btn.onclick=()=>{
+
+alert("Sticker sent: "+btn.textContent);
+
+};
+
+});
+
+
+/* BOARD */
+
+function createBoard(){
+
+const board=document.getElementById("board");
+
+board.innerHTML="";
+
+for(let i=0;i<225;i++){
+
+const cell=document.createElement("div");
+
+cell.className="cell";
+
+const row=Math.floor(i/15);
+
+const col=i%15;
+
+
+/* HOME AREAS */
+
+if(row<6&&col<6)
+cell.classList.add("red");
+
+else if(row<6&&col>8)
+cell.classList.add("green");
+
+else if(row>8&&col<6)
+cell.classList.add("blue");
+
+else if(row>8&&col>8)
+cell.classList.add("yellow");
+
+
+/* CENTER */
+
+if(row>=6&&row<=8&&col>=6&&col<=8)
+cell.classList.add("center");
+
+
+board.appendChild(cell);
+
+}
+
+}
+
+
+/* DICE */
+
+let turn=1;
+
+document.getElementById("roll").onclick=()=>{
+
+const number=Math.floor(Math.random()*6)+1;
+
+document.getElementById("number").textContent=
+"🎲 "+number;
+
+turn=turn===1?2:1;
+
+document.getElementById("turn").textContent=
+"Player "+turn+" Turn";
+
+};
+
+</script>
+
+</body>
+</html>
