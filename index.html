@@ -2,285 +2,381 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>Sharjeel Ludo</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{
-font-family:Arial,sans-serif;
-background:#080a12;
-color:#fff;
-min-height:100vh
+:root{
+  --bg:#090b15;
+  --panel:#141827;
+  --panel2:#1b2032;
+  --purple:#7657ff;
+  --gold:#ffd34d;
+  --text:#fff;
+  --muted:#8d93a8;
 }
-button{font-family:inherit;cursor:pointer}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+button{font:inherit;cursor:pointer}
 .hidden{display:none!important}
+.page{min-height:100vh}
 
 /* LOGIN */
-#login{
-min-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-padding:20px;
-background:radial-gradient(circle at top,#38316e,#080a12 60%)
+.login{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+  background:
+    radial-gradient(circle at 50% 0,#4b3a9b 0,transparent 38%),
+    linear-gradient(180deg,#101126,#070910);
 }
-.loginbox{
-width:100%;
-max-width:400px;
-padding:35px 25px;
-border-radius:28px;
-text-align:center;
-background:rgba(255,255,255,.08);
-border:1px solid rgba(255,255,255,.12);
-box-shadow:0 20px 80px rgba(0,0,0,.45)
+.login-card{
+  width:100%;
+  max-width:410px;
+  padding:35px 24px;
+  border-radius:30px;
+  text-align:center;
+  background:#15192aee;
+  border:1px solid #ffffff16;
+  box-shadow:0 30px 100px #0009;
 }
-.logo{font-size:75px}
-.loginbox h1{margin:10px 0;font-size:27px}
-.loginbox p{color:#aaa;margin-bottom:28px}
+.logo{
+  width:90px;
+  height:90px;
+  margin:auto;
+  display:grid;
+  place-items:center;
+  border-radius:27px;
+  font-size:55px;
+  background:linear-gradient(135deg,#8065ff,#392c91);
+  box-shadow:0 15px 40px #0007;
+}
+.login h1{margin:20px 0 5px}
+.login p{color:var(--muted)}
 .google{
-width:100%;
-padding:15px;
-border:0;
-border-radius:14px;
-font-weight:bold;
-font-size:16px
+  width:100%;
+  padding:15px;
+  border:0;
+  border-radius:15px;
+  background:#fff;
+  color:#111;
+  font-weight:700;
+  margin-top:20px;
 }
-.google span{margin-right:10px}
 
-/* APP */
-#app{min-height:100vh}
-header{
-max-width:1100px;
-margin:auto;
-padding:18px;
-display:flex;
-align-items:center;
-justify-content:space-between
+/* HEADER */
+.topbar{
+  height:70px;
+  padding:10px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:#101321;
+  border-bottom:1px solid #ffffff0b;
+  position:sticky;
+  top:0;
+  z-index:20;
 }
-.profile{
-display:flex;
-gap:10px;
-align-items:center
+.user{
+  display:flex;
+  align-items:center;
+  gap:10px;
 }
-.profile img{
-width:48px;
-height:48px;
-border-radius:50%
+.avatar{
+  width:45px;
+  height:45px;
+  border-radius:50%;
+  border:2px solid var(--purple);
 }
-.profile small{
-display:block;
-color:#888;
-margin-top:4px
+.user small{display:block;color:var(--muted);margin-top:3px}
+.coin{
+  padding:10px 15px;
+  border-radius:25px;
+  background:#211e29;
+  color:var(--gold);
+  font-weight:700;
 }
-.coins{
-background:#191b2a;
-padding:11px 17px;
-border-radius:30px;
-color:#ffd84d;
-font-weight:bold
+
+/* HOME */
+.container{
+  width:100%;
+  max-width:1100px;
+  margin:auto;
+  padding:18px 15px 90px;
 }
-main{
-max-width:1100px;
-margin:auto;
-padding:10px 18px 40px
+.banner{
+  border-radius:25px;
+  padding:24px;
+  background:
+    radial-gradient(circle at 90% 30%,#8b6cff55,transparent 35%),
+    linear-gradient(135deg,#28215e,#161a2d);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  overflow:hidden;
 }
-.hero{
-padding:28px;
-border-radius:25px;
-background:linear-gradient(135deg,#28205d,#15192f);
-display:flex;
-align-items:center;
-justify-content:space-between
+.banner h2{font-size:27px;margin:8px 0}
+.banner p{color:#a9acc0}
+.big-dice{font-size:85px}
+.actions{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin-top:15px;
 }
-.hero span{
-font-size:12px;
-color:#aaa;
-letter-spacing:2px
+.action{
+  min-height:120px;
+  border:1px solid #ffffff0b;
+  border-radius:20px;
+  background:var(--panel);
+  color:#fff;
+  text-align:left;
+  padding:17px;
 }
-.hero h2{margin:8px 0}
-.hero p{color:#aaa}
-.hero .dice{font-size:75px}
-.grid{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:15px;
-margin-top:20px
+.action:hover{background:var(--panel2)}
+.action .ico{font-size:34px;margin-bottom:15px}
+.action small{display:block;color:var(--muted);margin-top:5px}
+.section-title{
+  display:flex;
+  justify-content:space-between;
+  margin:28px 2px 12px;
 }
-.card{
-border:1px solid rgba(255,255,255,.07);
-background:#151827;
-color:white;
-padding:20px;
-border-radius:20px;
-text-align:left
+.rooms{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
 }
-.card:hover{background:#20243a}
-.card b,.card small{display:block}
-.card small{color:#888;margin-top:6px}
-.icon{font-size:35px;margin-bottom:15px}
+.room{
+  background:var(--panel);
+  border-radius:18px;
+  padding:17px;
+  border:1px solid #ffffff09;
+}
+.room button{
+  width:100%;
+  margin-top:12px;
+  border:0;
+  border-radius:10px;
+  padding:11px;
+  background:var(--purple);
+  color:#fff;
+}
 .wallet{
-margin-top:25px;
-padding:20px;
-border-radius:20px;
-background:#151827;
-display:flex;
-justify-content:space-between;
-align-items:center
+  padding:20px;
+  border-radius:20px;
+  background:var(--panel);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 }
-.wallet small{color:#888}
 .wallet strong{
-display:block;
-font-size:25px;
-color:#ffd84d;
-margin-top:5px
+  color:var(--gold);
+  font-size:25px;
+  display:block;
+  margin-top:5px;
 }
-.topup{
-border:0;
-padding:13px 20px;
-border-radius:12px;
-background:#6c5ce7;
-color:white;
-font-weight:bold
+.primary{
+  border:0;
+  padding:12px 18px;
+  border-radius:12px;
+  background:var(--purple);
+  color:#fff;
+  font-weight:700;
 }
-.logout{
-margin-top:20px;
-padding:11px 20px;
-border:0;
-border-radius:10px;
-background:#292c3d;
-color:#fff
+
+/* NAV */
+.nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  height:65px;
+  background:#101321f5;
+  backdrop-filter:blur(15px);
+  border-top:1px solid #ffffff0b;
+  display:flex;
+  justify-content:center;
+  gap:25px;
+  z-index:30;
 }
+.nav button{
+  background:none;
+  border:0;
+  color:#8d93a8;
+  min-width:70px;
+}
+.nav button.active{color:#fff}
+.nav span{display:block;font-size:22px}
+.nav small{font-size:10px}
 
 /* GAME */
-#game{
-padding:15px;
-max-width:600px;
-margin:auto
+.game-page{
+  min-height:100vh;
+  padding:15px;
+  background:
+    radial-gradient(circle at 50% 20%,#42347a,transparent 38%),
+    #090b15;
 }
-.gamehead{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:15px
+.game-head{
+  max-width:560px;
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:15px;
 }
 .back{
-border:0;
-background:#202333;
-color:#fff;
-padding:10px 15px;
-border-radius:10px
+  border:0;
+  background:#202538;
+  color:#fff;
+  border-radius:10px;
+  padding:10px 14px;
+}
+.board-wrap{
+  width:min(94vw,550px);
+  margin:auto;
+  padding:8px;
+  background:#171a28;
+  border-radius:22px;
+  box-shadow:0 25px 80px #0008;
 }
 .board{
-width:min(92vw,520px);
-height:min(92vw,520px);
-margin:auto;
-display:grid;
-grid-template-columns:repeat(15,1fr);
-grid-template-rows:repeat(15,1fr);
-background:#eee;
-border:7px solid #191b28;
-border-radius:18px;
-overflow:hidden
+  width:100%;
+  aspect-ratio:1;
+  display:grid;
+  grid-template-columns:repeat(15,1fr);
+  grid-template-rows:repeat(15,1fr);
+  overflow:hidden;
+  border-radius:16px;
+  background:#fff;
 }
 .cell{
-border:1px solid rgba(0,0,0,.1);
-background:#fff
+  border:1px solid #00000012;
+  position:relative;
 }
-.red{background:#ff6b6b}
-.green{background:#5be88a}
-.yellow{background:#ffe46b}
-.blue{background:#62a8ff}
-.safe{background:#ddd}
+.red{background:#ff646c}
+.green{background:#58d990}
+.yellow{background:#ffdf63}
+.blue{background:#5c9cff}
+.path{background:#fafafa}
 .center{
-background:linear-gradient(45deg,#ff5b5b 50%,#5b8dff 50%)
+  background:linear-gradient(135deg,#ff5555 0 25%,#ffdc55 25% 50%,#5bcf86 50% 75%,#568dff 75%);
 }
 .token{
-width:75%;
-height:75%;
-margin:12%;
-border-radius:50%;
-border:3px solid #fff;
-box-shadow:0 3px 7px #0007
+  width:72%;
+  height:72%;
+  margin:14%;
+  border-radius:50%;
+  border:2px solid white;
+  box-shadow:0 3px 7px #0008;
 }
-.redtoken{background:#e63946}
-.bluetoken{background:#247bff}
-.controls{
-text-align:center;
-margin-top:18px
+.rtoken{background:#e53946}
+.btoken{background:#367dff}
+.game-info{
+  max-width:550px;
+  margin:15px auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
-#roll{
-font-size:20px;
-padding:14px 30px;
-border:0;
-border-radius:15px;
-background:#6c5ce7;
-color:white;
-font-weight:bold
+.dice-button{
+  width:75px;
+  height:75px;
+  border:0;
+  border-radius:20px;
+  font-size:35px;
+  background:linear-gradient(135deg,#8065ff,#503cc0);
+  color:#fff;
+  box-shadow:0 10px 30px #0006;
 }
-#number{
-font-size:35px;
-margin:12px
+.turn{
+  background:#181c2c;
+  border-radius:15px;
+  padding:13px 17px;
 }
-.stickers{
-display:flex;
-justify-content:center;
-gap:8px;
-margin-top:15px
+.emotes{
+  max-width:550px;
+  margin:10px auto;
+  display:flex;
+  gap:8px;
 }
-.sticker{
-font-size:28px;
-background:#191b2a;
-border:0;
-padding:8px;
-border-radius:12px
+.emotes button{
+  flex:1;
+  border:0;
+  background:#191d2d;
+  border-radius:12px;
+  padding:9px;
+  font-size:24px;
 }
 
 /* MODAL */
 .modal{
-position:fixed;
-inset:0;
-background:#0009;
-display:flex;
-align-items:center;
-justify-content:center;
-padding:20px;
-z-index:10
+  position:fixed;
+  inset:0;
+  background:#000b;
+  z-index:100;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
 }
-.modalbox{
-width:100%;
-max-width:400px;
-background:#171a29;
-padding:25px;
-border-radius:22px;
-text-align:center
+.modal-card{
+  width:100%;
+  max-width:550px;
+  padding:25px;
+  background:#171b2b;
+  border-radius:25px 25px 0 0;
 }
-.modalbox h2{margin-bottom:15px}
-.stickerlist{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:10px
+.modal-card h2{margin-top:0}
+.sticker-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin-top:15px;
 }
-.stickerlist button{
-font-size:30px;
-padding:10px;
-border:0;
-border-radius:12px;
-background:#252a40
+.sticker-grid button{
+  border:0;
+  background:#252a40;
+  border-radius:15px;
+  padding:15px;
+  font-size:30px;
 }
 .close{
-margin-top:20px;
-padding:10px 20px;
-border:0;
-border-radius:10px;
-background:#33384e;
-color:#fff
+  width:100%;
+  margin-top:20px;
+  padding:13px;
+  border:0;
+  border-radius:12px;
+  background:#30364d;
+  color:#fff;
 }
 
-@media(max-width:700px){
-.grid{grid-template-columns:repeat(2,1fr)}
-.hero h2{font-size:22px}
-.hero .dice{font-size:55px}
+/* PROFILE */
+.profile-card{
+  text-align:center;
+  padding:30px 20px;
+  background:var(--panel);
+  border-radius:25px;
+}
+.profile-big{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  border:3px solid var(--purple);
+}
+
+/* MOBILE */
+@media(max-width:750px){
+  .actions{grid-template-columns:repeat(2,1fr)}
+  .rooms{grid-template-columns:1fr}
+  .banner h2{font-size:21px}
+  .big-dice{font-size:60px}
 }
 </style>
 </head>
@@ -288,149 +384,226 @@ color:#fff
 <body>
 
 <!-- LOGIN -->
-<section id="login">
-<div class="loginbox">
-<div class="logo">🎲</div>
-<h1>SHARJEEL LUDO</h1>
-<p>Play • Challenge • Enjoy</p>
-
-<button id="googleLogin" class="google">
-<span>G</span> Continue with Google
-</button>
-
-<p style="margin-top:18px;font-size:12px">
-Secure Firebase Authentication
-</p>
+<div id="loginPage" class="login">
+  <div class="login-card">
+    <div class="logo">🎲</div>
+    <h1>SHARJEEL LUDO</h1>
+    <p>Social • Multiplayer • Fun</p>
+    <button id="googleBtn" class="google">
+      🇬 Continue with Google
+    </button>
+  </div>
 </div>
-</section>
+
+
+<!-- APP -->
+<div id="app" class="hidden">
+
+<header class="topbar">
+  <div class="user">
+    <img id="avatar" class="avatar">
+    <div>
+      <b id="username">Player</b>
+      <small id="useremail">Guest</small>
+    </div>
+  </div>
+
+  <div class="coin">🪙 <span id="coins">0</span></div>
+</header>
 
 
 <!-- HOME -->
-<section id="app" class="hidden">
+<section id="homePage" class="container">
 
-<header>
-<div class="profile">
-<img id="photo">
-<div>
-<strong id="name">Player</strong>
-<small id="email"></small>
-</div>
-</div>
+  <div class="banner">
+    <div>
+      <small>WELCOME BACK 👋</small>
+      <h2>Let's Play Ludo!</h2>
+      <p>Invite friends and start your match.</p>
+    </div>
+    <div class="big-dice">🎲</div>
+  </div>
 
-<div class="coins">
-🪙 <span id="coins">0</span>
-</div>
-</header>
 
-<main>
+  <div class="actions">
 
-<div class="hero">
-<div>
-<span>WELCOME BACK</span>
-<h2>Ready to Play? 🎲</h2>
-<p>Challenge your friends.</p>
-</div>
-<div class="dice">🎲</div>
-</div>
+    <button class="action" id="quickPlay">
+      <div class="ico">🎮</div>
+      <b>Quick Play</b>
+      <small>Start a game</small>
+    </button>
 
-<div class="grid">
+    <button class="action" id="createRoom">
+      <div class="ico">🏠</div>
+      <b>Create Room</b>
+      <small>Play with friends</small>
+    </button>
 
-<button class="card" id="play">
-<div class="icon">🎮</div>
-<b>Play Ludo</b>
-<small>Start a game</small>
-</button>
+    <button class="action" id="stickersBtn">
+      <div class="ico">😎</div>
+      <b>Stickers</b>
+      <small>Send reactions</small>
+    </button>
 
-<button class="card" id="online">
-<div class="icon">🌐</div>
-<b>Online</b>
-<small>Multiplayer rooms</small>
-</button>
+    <button class="action" id="leaderBtn">
+      <div class="ico">🏆</div>
+      <b>Leaderboard</b>
+      <small>Top players</small>
+    </button>
 
-<button class="card" id="stick">
-<div class="icon">😎</div>
-<b>Stickers</b>
-<small>Send stickers</small>
-</button>
+  </div>
 
-<button class="card" id="leader">
-<div class="icon">🏆</div>
-<b>Leaderboard</b>
-<small>Top players</small>
-</button>
 
-</div>
+  <div class="section-title">
+    <h3>🔥 Public Rooms</h3>
+    <small id="roomCount">Live</small>
+  </div>
 
-<div class="wallet">
-<div>
-<small>MY WALLET</small>
-<strong>🪙 <span id="wallet">0</span></strong>
-</div>
-<button class="topup" id="topup">＋ TOP UP</button>
-</div>
+  <div id="rooms" class="rooms">
+    <div class="room">
+      <b>🎲 Friendly Room</b>
+      <p style="color:#888">2–4 Players</p>
+      <button>Join</button>
+    </div>
 
-<button class="logout" id="logout">Logout</button>
+    <div class="room">
+      <b>🏆 Pro Room</b>
+      <p style="color:#888">Competitive</p>
+      <button>Join</button>
+    </div>
 
-</main>
+    <div class="room">
+      <b>⚡ Quick Room</b>
+      <p style="color:#888">Fast Match</p>
+      <button>Join</button>
+    </div>
+  </div>
+
+
+  <div class="section-title">
+    <h3>🪙 Wallet</h3>
+  </div>
+
+  <div class="wallet">
+    <div>
+      <small>Available Coins</small>
+      <strong>🪙 <span id="walletCoins">0</span></strong>
+    </div>
+    <button id="topupBtn" class="primary">＋ Top Up</button>
+  </div>
+
+</section>
+
+
+<!-- PROFILE -->
+<section id="profilePage" class="container hidden">
+
+  <div class="profile-card">
+    <img id="profileImage" class="profile-big">
+    <h2 id="profileName" style="margin:15px 0 5px">Player</h2>
+    <p id="profileEmail" style="color:#888"></p>
+
+    <div style="margin-top:25px">
+      <b>🪙 <span id="profileCoins">0</span></b>
+      <p style="color:#888;margin-top:5px">Coins</p>
+    </div>
+
+    <button id="logoutBtn" class="close">Logout</button>
+  </div>
+
 </section>
 
 
 <!-- GAME -->
-<section id="game" class="hidden">
+<section id="gamePage" class="game-page hidden">
 
-<div class="gamehead">
-<button class="back" id="back">← Home</button>
-<h2>🎲 Ludo</h2>
-</div>
+  <div class="game-head">
+    <button id="backHome" class="back">← Home</button>
+    <b>🎲 Ludo Match</b>
+    <span>🪙 <span id="gameCoins">0</span></span>
+  </div>
 
-<div class="board" id="board"></div>
+  <div class="board-wrap">
+    <div id="board" class="board"></div>
+  </div>
 
-<div class="controls">
+  <div class="game-info">
+    <div class="turn">
+      <small style="color:#888">TURN</small><br>
+      <b id="turnText">Player 1</b>
+    </div>
 
-<div id="turn">Player 1 Turn</div>
+    <div style="text-align:center">
+      <div id="diceNumber" style="font-size:22px;margin-bottom:5px">Ready</div>
+      <button id="rollBtn" class="dice-button">🎲</button>
+    </div>
+  </div>
 
-<div id="number">🎲</div>
-
-<button id="roll">ROLL DICE</button>
-
-<div class="stickers">
-<button class="sticker">😂</button>
-<button class="sticker">😎</button>
-<button class="sticker">🔥</button>
-<button class="sticker">👏</button>
-<button class="sticker">😡</button>
-</div>
-
-</div>
+  <div class="emotes">
+    <button>😂</button>
+    <button>😎</button>
+    <button>🔥</button>
+    <button>👏</button>
+    <button>❤️</button>
+  </div>
 
 </section>
 
 
+<!-- BOTTOM NAV -->
+<nav id="nav" class="nav hidden">
+
+  <button id="homeNav" class="active">
+    <span>🏠</span><small>Home</small>
+  </button>
+
+  <button id="gameNav">
+    <span>🎮</span><small>Play</small>
+  </button>
+
+  <button id="stickerNav">
+    <span>😎</span><small>Stickers</small>
+  </button>
+
+  <button id="profileNav">
+    <span>👤</span><small>Profile</small>
+  </button>
+
+</nav>
+
+
 <!-- STICKER MODAL -->
-<div id="modal" class="modal hidden">
+<div id="stickerModal" class="modal hidden">
 
-<div class="modalbox">
+  <div class="modal-card">
+    <h2>😎 Sticker Collection</h2>
 
-<h2>😎 Stickers</h2>
+    <div class="sticker-grid">
+      <button>😂</button>
+      <button>🤣</button>
+      <button>😎</button>
+      <button>🔥</button>
+      <button>👏</button>
+      <button>❤️</button>
+      <button>🎉</button>
+      <button>😡</button>
+      <button>🥳</button>
+      <button>💯</button>
+      <button>🤩</button>
+      <button>👑</button>
+    </div>
 
-<div class="stickerlist">
-<button>😂</button>
-<button>🤣</button>
-<button>😎</button>
-<button>🔥</button>
-<button>❤️</button>
-<button>👏</button>
-<button>😡</button>
-<button>🎉</button>
-</div>
+    <button id="closeSticker" class="close">Close</button>
+  </div>
 
-<button class="close" id="close">Close</button>
-
-</div>
 </div>
 
 
 <script type="module">
+
+/* =========================
+   FIREBASE
+========================= */
 
 import {initializeApp}
 from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
@@ -447,14 +620,12 @@ from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 import {
 getDatabase,
 ref,
-set,
 get,
+set,
 onValue
 }
 from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
 
-
-/* FIREBASE */
 
 const firebaseConfig={
 
@@ -485,86 +656,114 @@ const db=getDatabase(app);
 const provider=new GoogleAuthProvider();
 
 
-/* ELEMENTS */
+/* =========================
+   ELEMENTS
+========================= */
 
-const login=document.getElementById("login");
-
-const home=document.getElementById("app");
-
-const game=document.getElementById("game");
-
-const modal=document.getElementById("modal");
-
-const google=document.getElementById("googleLogin");
-
-const coins=document.getElementById("coins");
-
-const wallet=document.getElementById("wallet");
+const loginPage=document.getElementById("loginPage");
+const appPage=document.getElementById("app");
+const homePage=document.getElementById("homePage");
+const profilePage=document.getElementById("profilePage");
+const gamePage=document.getElementById("gamePage");
+const nav=document.getElementById("nav");
 
 
-/* GOOGLE LOGIN */
+let currentUser=null;
 
-google.onclick=async()=>{
+
+/* =========================
+   GOOGLE LOGIN
+========================= */
+
+document.getElementById("googleBtn").onclick=async()=>{
 
 try{
 
-google.disabled=true;
-
-google.textContent="Signing in...";
-
 await signInWithPopup(auth,provider);
 
-}catch(e){
+}catch(error){
 
-alert("Login failed: "+e.message);
+console.error(error);
 
-google.disabled=false;
-
-google.innerHTML="<span>G</span> Continue with Google";
+alert("Google Login Error:\n"+error.message);
 
 }
 
 };
 
 
-/* AUTH */
+/* =========================
+   AUTH
+========================= */
 
 onAuthStateChanged(auth,async user=>{
 
 if(!user){
 
-login.classList.remove("hidden");
+currentUser=null;
 
-home.classList.add("hidden");
-
-game.classList.add("hidden");
+loginPage.classList.remove("hidden");
+appPage.classList.add("hidden");
 
 return;
 
 }
 
-login.classList.add("hidden");
+currentUser=user;
 
-home.classList.remove("hidden");
+loginPage.classList.add("hidden");
+appPage.classList.remove("hidden");
+nav.classList.remove("hidden");
 
-document.getElementById("name").textContent=
-user.displayName||"Player";
 
-document.getElementById("email").textContent=
-user.email||"";
+setUserUI(user);
 
-document.getElementById("photo").src=
+await createUser(user);
+
+});
+
+
+/* =========================
+   USER
+========================= */
+
+function setUserUI(user){
+
+const name=user.displayName||"Player";
+
+const email=user.email||"";
+
+const photo=
 user.photoURL||
-"https://ui-avatars.com/api/?name=Player";
+"https://ui-avatars.com/api/?name="+
+encodeURIComponent(name);
 
+
+document.getElementById("username").textContent=name;
+document.getElementById("useremail").textContent=email;
+
+document.getElementById("avatar").src=photo;
+
+document.getElementById("profileImage").src=photo;
+
+document.getElementById("profileName").textContent=name;
+
+document.getElementById("profileEmail").textContent=email;
+
+}
+
+
+async function createUser(user){
 
 const userRef=ref(db,"users/"+user.uid);
 
-const snap=await get(userRef);
+const snapshot=await get(userRef);
 
-if(!snap.exists()){
+if(!snapshot.exists()){
 
 await set(userRef,{
+
+uid:user.uid,
 
 name:user.displayName||"Player",
 
@@ -574,6 +773,10 @@ photo:user.photoURL||"",
 
 coins:0,
 
+level:1,
+
+xp:0,
+
 stickers:["😂","😎","🔥"],
 
 createdAt:Date.now()
@@ -582,113 +785,154 @@ createdAt:Date.now()
 
 }
 
-onValue(userRef,s=>{
 
-const data=s.val()||{};
+onValue(userRef,snapshot=>{
 
-const c=Number(data.coins||0);
+const data=snapshot.val()||{};
 
-coins.textContent=c;
+const coins=Number(data.coins||0);
 
-wallet.textContent=c;
+document.getElementById("coins").textContent=coins;
+
+document.getElementById("walletCoins").textContent=coins;
+
+document.getElementById("profileCoins").textContent=coins;
+
+document.getElementById("gameCoins").textContent=coins;
 
 });
 
-});
+}
 
 
-/* LOGOUT */
+/* =========================
+   NAVIGATION
+========================= */
 
-document.getElementById("logout").onclick=()=>signOut(auth);
+function showHome(){
 
+homePage.classList.remove("hidden");
+profilePage.classList.add("hidden");
+gamePage.classList.add("hidden");
 
-/* GAME */
+}
 
-document.getElementById("play").onclick=()=>{
+function showProfile(){
 
-home.classList.add("hidden");
+homePage.classList.add("hidden");
+profilePage.classList.remove("hidden");
+gamePage.classList.add("hidden");
 
-game.classList.remove("hidden");
+}
+
+function showGame(){
+
+homePage.classList.add("hidden");
+profilePage.classList.add("hidden");
+gamePage.classList.remove("hidden");
 
 createBoard();
 
+}
+
+
+document.getElementById("homeNav").onclick=showHome;
+
+document.getElementById("profileNav").onclick=showProfile;
+
+document.getElementById("gameNav").onclick=showGame;
+
+document.getElementById("quickPlay").onclick=showGame;
+
+document.getElementById("backHome").onclick=showHome;
+
+
+/* =========================
+   STICKERS
+========================= */
+
+function openStickers(){
+
+document.getElementById("stickerModal")
+.classList.remove("hidden");
+
+}
+
+document.getElementById("stickersBtn").onclick=openStickers;
+
+document.getElementById("stickerNav").onclick=openStickers;
+
+document.getElementById("closeSticker").onclick=()=>{
+
+document.getElementById("stickerModal")
+.classList.add("hidden");
+
 };
 
 
-document.getElementById("back").onclick=()=>{
+/* =========================
+   TOPUP
+========================= */
 
-game.classList.add("hidden");
-
-home.classList.remove("hidden");
-
-};
-
-
-/* ONLINE */
-
-document.getElementById("online").onclick=()=>{
-
-alert("Online multiplayer will be connected with Firebase rooms in the next version.");
-
-};
-
-
-/* LEADERBOARD */
-
-document.getElementById("leader").onclick=()=>{
-
-alert("Leaderboard system will be connected with Firebase.");
-
-};
-
-
-/* TOPUP */
-
-document.getElementById("topup").onclick=()=>{
+document.getElementById("topupBtn").onclick=()=>{
 
 alert(
-"Top-Up System\n\n"+
-"Secure payment verification will be connected through the backend."
+"🪙 TOP UP\n\n"+
+"Payment verification system will be connected through a secure backend."
 );
 
 };
 
 
-/* STICKERS */
+/* =========================
+   CREATE ROOM
+========================= */
 
-document.getElementById("stick").onclick=()=>{
+document.getElementById("createRoom").onclick=()=>{
 
-modal.classList.remove("hidden");
-
-};
-
-document.getElementById("close").onclick=()=>{
-
-modal.classList.add("hidden");
-
-};
-
-
-/* STICKER SEND */
-
-document.querySelectorAll(".sticker").forEach(btn=>{
-
-btn.onclick=()=>{
-
-alert("Sticker sent: "+btn.textContent);
+alert(
+"🏠 CREATE ROOM\n\n"+
+"Firebase multiplayer room system will be connected next."
+);
 
 };
 
-});
+
+/* =========================
+   LEADERBOARD
+========================= */
+
+document.getElementById("leaderBtn").onclick=()=>{
+
+alert(
+"🏆 LEADERBOARD\n\n"+
+"Firebase player ranking will be connected next."
+);
+
+};
 
 
-/* BOARD */
+/* =========================
+   LOGOUT
+========================= */
+
+document.getElementById("logoutBtn").onclick=()=>{
+
+signOut(auth);
+
+};
+
+
+/* =========================
+   LUDO BOARD
+========================= */
 
 function createBoard(){
 
 const board=document.getElementById("board");
 
 board.innerHTML="";
+
 
 for(let i=0;i<225;i++){
 
@@ -701,25 +945,67 @@ const row=Math.floor(i/15);
 const col=i%15;
 
 
-/* HOME AREAS */
+/* HOMES */
 
-if(row<6&&col<6)
+if(row<6 && col<6)
 cell.classList.add("red");
 
-else if(row<6&&col>8)
+if(row<6 && col>8)
 cell.classList.add("green");
 
-else if(row>8&&col<6)
+if(row>8 && col<6)
 cell.classList.add("blue");
 
-else if(row>8&&col>8)
+if(row>8 && col>8)
 cell.classList.add("yellow");
+
+
+/* PATH */
+
+if(
+(row>=6 && row<=8) ||
+(col>=6 && col<=8)
+){
+
+cell.classList.add("path");
+
+}
 
 
 /* CENTER */
 
-if(row>=6&&row<=8&&col>=6&&col<=8)
+if(
+row>=6 && row<=8 &&
+col>=6 && col<=8
+){
+
+cell.classList.remove("path");
 cell.classList.add("center");
+
+}
+
+
+/* TOKENS */
+
+if(i===16){
+
+const token=document.createElement("div");
+
+token.className="token rtoken";
+
+cell.appendChild(token);
+
+}
+
+if(i===208){
+
+const token=document.createElement("div");
+
+token.className="token btoken";
+
+cell.appendChild(token);
+
+}
 
 
 board.appendChild(cell);
@@ -729,23 +1015,68 @@ board.appendChild(cell);
 }
 
 
-/* DICE */
+/* =========================
+   DICE
+========================= */
 
-let turn=1;
+let player=1;
 
-document.getElementById("roll").onclick=()=>{
+document.getElementById("rollBtn").onclick=()=>{
 
 const number=Math.floor(Math.random()*6)+1;
 
-document.getElementById("number").textContent=
-"🎲 "+number;
+const faces=["⚀","⚁","⚂","⚃","⚄","⚅"];
 
-turn=turn===1?2:1;
+document.getElementById("diceNumber").textContent=
+faces[number-1]+"  "+number;
 
-document.getElementById("turn").textContent=
-"Player "+turn+" Turn";
+
+player=player===1?2:1;
+
+document.getElementById("turnText").textContent=
+"Player "+player+" Turn";
 
 };
+
+
+/* =========================
+   EMOTES
+========================= */
+
+document.querySelectorAll(".emotes button")
+.forEach(btn=>{
+
+btn.onclick=()=>{
+
+const old=btn.textContent;
+
+btn.textContent="✓";
+
+setTimeout(()=>{
+
+btn.textContent=old;
+
+},500);
+
+};
+
+});
+
+
+/* =========================
+   STICKER BUTTONS
+========================= */
+
+document.querySelectorAll(".sticker-grid button")
+.forEach(btn=>{
+
+btn.onclick=()=>{
+
+alert("Sticker selected: "+btn.textContent);
+
+};
+
+});
 
 </script>
 
