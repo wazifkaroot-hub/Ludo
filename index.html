@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>Sharjeel Ludo - Pro Edition</title>
+<title>Sharjeel Ludo Pro - Ultimate Edition</title>
 
 <style>
 :root{
@@ -34,7 +34,7 @@ body{
 button{font:inherit;cursor:pointer;}
 .hidden{display:none!important;}
 
-/* CUSTOM TOAST NOTIFICATION */
+/* TOAST NOTIFICATION */
 #toastContainer {
   position: fixed;
   top: 20px;
@@ -355,9 +355,10 @@ button{font:inherit;cursor:pointer;}
   border-radius:14px;
   overflow:hidden;
   background:#ffffff;
+  position: relative;
 }
 .cell{
-  border:1px solid rgba(0,0,0,0.06);
+  border:1px solid rgba(0,0,0,0.05);
   position:relative;
   display:flex;
   align-items:center;
@@ -370,16 +371,27 @@ button{font:inherit;cursor:pointer;}
 .path{background:#f8f9fa;}
 .center-box{background:linear-gradient(135deg, #ff5252 0 25%, #f1c40f 25% 50%, #2ecc71 50% 75%, #3498db 75%);}
 
+/* TOKENS */
 .token{
-  width:78%;
-  height:78%;
+  width:72%;
+  height:72%;
   border-radius:50%;
   border:2px solid #fff;
   box-shadow:0 3px 6px rgba(0,0,0,0.4);
   cursor:pointer;
-  transition: transform 0.15s;
+  transition: transform 0.15s, box-shadow 0.15s;
+  z-index: 5;
 }
-.token:hover{transform:scale(1.15);}
+.token:hover{transform:scale(1.18); box-shadow:0 0 10px #fff;}
+.token.highlight{
+  animation: pulseToken 0.8s infinite alternate;
+  border: 3px solid #ffeb3b;
+}
+@keyframes pulseToken {
+  from { transform: scale(1); box-shadow: 0 0 5px #ffeb3b; }
+  to { transform: scale(1.25); box-shadow: 0 0 15px #ffeb3b; }
+}
+
 .t-red{background:#e74c3c;}
 .t-green{background:#27ae60;}
 .t-yellow{background:#d4ac0d;}
@@ -414,10 +426,10 @@ button{font:inherit;cursor:pointer;}
   box-shadow:0 8px 20px rgba(124,92,255,0.4);
   display:grid;
   place-items:center;
-  transition: transform 0.1s;
+  transition: transform 0.1s, opacity 0.2s;
 }
 .dice-button:active{transform:scale(0.92);}
-.dice-button:disabled{opacity:0.5; cursor:not-allowed;}
+.dice-button:disabled{opacity:0.4; cursor:not-allowed;}
 
 .emotes{
   width:100%;
@@ -484,7 +496,6 @@ button{font:inherit;cursor:pointer;}
   font-weight:700;
 }
 
-/* RESPONSIVE DESIGN */
 @media(max-width:750px){
   .actions{grid-template-columns:repeat(2,1fr);}
   .rooms{grid-template-columns:1fr;}
@@ -623,7 +634,7 @@ button{font:inherit;cursor:pointer;}
     <div class="game-info">
       <div class="turn-box">
         <small style="color:var(--muted); font-size:11px;">CURRENT TURN</small>
-        <b id="turnText">Player 1</b>
+        <b id="turnText">Red Player</b>
       </div>
       <div class="dice-container">
         <div id="diceValDisplay" style="font-size:24px;">⚀</div>
@@ -676,7 +687,7 @@ button{font:inherit;cursor:pointer;}
   </div>
 </div>
 
-<!-- FIREBASE SDKs & LOGIC -->
+<!-- FIREBASE & LUDO GAME ENGINE SCRIPT -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
@@ -701,7 +712,6 @@ const provider = new GoogleAuthProvider();
 let currentUser = null;
 let userCoins = 0;
 
-// Global Toast System
 window.showToast = function(msg) {
   const container = document.getElementById("toastContainer");
   const t = document.createElement("div");
@@ -711,7 +721,7 @@ window.showToast = function(msg) {
   setTimeout(() => t.remove(), 3000);
 };
 
-// Authentication Flow
+// Authentication
 document.getElementById("googleBtn").onclick = async () => {
   try {
     await signInWithPopup(auth, provider);
@@ -765,7 +775,7 @@ async function initUserDatabase(user) {
       name: user.displayName || "Player",
       email: user.email || "",
       photo: user.photoURL || "",
-      coins: 1000, // Starting bonus coins
+      coins: 1000,
       createdAt: Date.now()
     });
   }
@@ -780,7 +790,7 @@ async function initUserDatabase(user) {
   });
 }
 
-// Navigation Handler
+// Navigation Tabs
 const homePage = document.getElementById("homePage");
 const profilePage = document.getElementById("profilePage");
 const gamePage = document.getElementById("gamePage");
@@ -801,17 +811,16 @@ function switchTab(tab) {
   } else if (tab === 'game') {
     gamePage.classList.remove("hidden");
     document.getElementById("gameNav").classList.add("active");
-    buildLudoBoard();
+    initGameEngine();
   }
 }
 
 document.getElementById("homeNav").onclick = () => switchTab('home');
 document.getElementById("profileNav").onclick = () => switchTab('profile');
 document.getElementById("gameNav").onclick = () => switchTab('game');
-document.getElementById("quickPlay").onclick = () => { switchTab('game'); };
+document.getElementById("quickPlay").onclick = () => switchTab('game');
 document.getElementById("backHome").onclick = () => switchTab('home');
 
-// Room Integration
 window.joinRoom = function(roomName, entryFee) {
   if (userCoins < entryFee) {
     showToast("❌ Insufficient coins! Top up your wallet.");
@@ -833,26 +842,80 @@ window.sendEmote = function(emoji) {
   showToast("Reaction sent: " + emoji);
 };
 
-// Top Up & Leaderboard Mock Actions
 document.getElementById("topupBtn").onclick = async () => {
   if (!currentUser) return;
   const userRef = ref(db, "users/" + currentUser.uid);
-  const newBalance = userCoins + 500;
-  await update(userRef, { coins: newBalance });
+  await update(userRef, { coins: userCoins + 500 });
   showToast("🪙 Successfully claimed +500 free bonus coins!");
 };
 
-document.getElementById("leaderBtn").onclick = () => {
-  showToast("🏆 Leaderboard rankings sync with active Firebase users.");
-};
-
+document.getElementById("leaderBtn").onclick = () => showToast("🏆 Leaderboard syncs with active Firebase users.");
 document.getElementById("logoutBtn").onclick = () => signOut(auth);
 
-// Interactive Functional Ludo Board Engine
-let currentTurn = 1;
-let diceVal = 1;
 
-function buildLudoBoard() {
+// ==========================================
+// ADVANCED INTERACTIVE LUDO GAME ENGINE
+// ==========================================
+
+let turn = 'red'; // 'red', 'green', 'yellow', 'blue'
+let lastDiceVal = 0;
+let diceRolled = false;
+
+// Token positions: -1 means inside base, 0 to 51 are common path positions
+let tokens = {
+  red: [-1, -1, -1, -1],
+  green: [-1, -1, -1, -1],
+  yellow: [-1, -1, -1, -1],
+  blue: [-1, -1, -1, -1]
+};
+
+// Track coordinates for 15x15 Ludo Board (Index mapping)
+const pathCoords = [
+  {r: 6, c: 1}, {r: 6, c: 2}, {r: 6, c: 3}, {r: 6, c: 4}, {r: 6, c: 5},
+  {r: 5, c: 6}, {r: 4, c: 6}, {r: 3, c: 6}, {r: 2, c: 6}, {r: 1, c: 6}, {r: 0, c: 6},
+  {r: 0, c: 7},
+  {r: 0, c: 8}, {r: 1, c: 8}, {r: 2, c: 8}, {r: 3, c: 8}, {r: 4, c: 8}, {r: 5, c: 8},
+  {r: 6, c: 9}, {r: 6, c: 10}, {r: 6, c: 11}, {r: 6, c: 12}, {r: 6, c: 13}, {r: 6, c: 14},
+  {r: 7, c: 14},
+  {r: 8, c: 14}, {r: 8, c: 13}, {r: 8, c: 12}, {r: 8, c: 11}, {r: 8, c: 10}, {r: 8, c: 9},
+  {r: 9, c: 8}, {r: 10, c: 8}, {r: 11, c: 8}, {r: 12, c: 8}, {r: 13, c: 8}, {r: 14, c: 8},
+  {r: 14, c: 7},
+  {r: 14, c: 6}, {r: 13, c: 6}, {r: 12, c: 6}, {r: 11, c: 6}, {r: 10, c: 6}, {r: 9, c: 6},
+  {r: 8, c: 5}, {r: 8, c: 4}, {r: 8, c: 3}, {r: 8, c: 2}, {r: 8, c: 1}, {r: 8, c: 0},
+  {r: 7, c: 0}, {r: 6, c: 0}
+];
+
+// Base home coordinates for each color's 4 tokens
+const baseCoords = {
+  red: [{r: 1, c: 1}, {r: 1, c: 4}, {r: 4, c: 1}, {r: 4, c: 4}],
+  green: [{r: 1, c: 10}, {r: 1, c: 13}, {r: 4, c: 10}, {r: 4, c: 13}],
+  yellow: [{r: 10, c: 10}, {r: 10, c: 13}, {r: 13, c: 10}, {r: 13, c: 13}],
+  blue: [{r: 10, c: 1}, {r: 10, c: 4}, {r: 13, c: 1}, {r: 13, c: 4}]
+};
+
+// Starting path offsets on the main track for each color
+const startOffsets = { red: 0, green: 13, yellow: 26, blue: 39 };
+
+function initGameEngine() {
+  tokens = {
+    red: [-1, -1, -1, -1],
+    green: [-1, -1, -1, -1],
+    yellow: [-1, -1, -1, -1],
+    blue: [-1, -1, -1, -1]
+  };
+  turn = 'red';
+  diceRolled = false;
+  document.getElementById("rollBtn").disabled = false;
+  updateTurnUI();
+  renderBoard();
+}
+
+function updateTurnUI() {
+  const names = { red: 'Red Player', green: 'Green Player', yellow: 'Yellow Player', blue: 'Blue Player' };
+  document.getElementById("turnText").textContent = names[turn] + (diceRolled ? " (Click token to move)" : " (Roll Dice)");
+}
+
+function renderBoard() {
   const board = document.getElementById("board");
   board.innerHTML = "";
 
@@ -862,48 +925,147 @@ function buildLudoBoard() {
     const r = Math.floor(i / 15);
     const c = i % 15;
 
-    // Bases
     if (r < 6 && c < 6) cell.classList.add("red-base");
     else if (r < 6 && c > 8) cell.classList.add("green-base");
     else if (r > 8 && c < 6) cell.classList.add("blue-base");
     else if (r > 8 && c > 8) cell.classList.add("yellow-base");
     else if ((r >= 6 && r <= 8) || (c >= 6 && c <= 8)) cell.classList.add("path");
 
-    // Center Home
     if (r >= 6 && r <= 8 && c >= 6 && c <= 8) {
       cell.className = "cell center-box";
     }
 
-    // Place Initial Mock Tokens in Bases
-    if (i === 16) {
-      const token = document.createElement("div");
-      token.className = "token t-red";
-      token.title = "Red Token";
-      token.onclick = () => showToast("Red Token selected! Roll dice to move.");
-      cell.appendChild(token);
-    }
-    if (i === 208) {
-      const token = document.createElement("div");
-      token.className = "token t-blue";
-      token.title = "Blue Token";
-      token.onclick = () => showToast("Blue Token selected!");
-      cell.appendChild(token);
-    }
-
     board.appendChild(cell);
+  }
+
+  // Render Base Tokens
+  for (let color in tokens) {
+    tokens[color].forEach((pos, idx) => {
+      let coord = null;
+      if (pos === -1) {
+        coord = baseCoords[color][idx];
+      } else {
+        // Map path index to absolute board grid coordinates
+        let trackIdx = (pos + startOffsets[color]) % 52;
+        coord = pathCoords[trackIdx];
+      }
+
+      if (coord) {
+        let cellIndex = coord.r * 15 + coord.c;
+        let targetCell = board.children[cellIndex];
+        if (targetCell) {
+          const tDiv = document.createElement("div");
+          tDiv.className = `token t-${color}`;
+          
+          // Highlight current player's tokens if dice is rolled
+          if (color === turn && diceRolled) {
+            tDiv.classList.add("highlight");
+          }
+
+          tDiv.onclick = () => handleTokenClick(color, idx);
+          targetCell.appendChild(tDiv);
+        }
+      }
+    });
   }
 }
 
+// Dice Roll Handler
 document.getElementById("rollBtn").onclick = () => {
+  if (diceRolled) {
+    showToast("⚠️ Please move your token first!");
+    return;
+  }
+
   const faces = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
-  diceVal = Math.floor(Math.random() * 6) + 1;
-  document.getElementById("diceValDisplay").textContent = faces[diceVal - 1];
+  lastDiceVal = Math.floor(Math.random() * 6) + 1;
+  document.getElementById("diceValDisplay").textContent = faces[lastDiceVal - 1];
   
-  showToast("Rolled a " + diceVal + "!");
-  
-  currentTurn = currentTurn === 1 ? 2 : 1;
-  document.getElementById("turnText").textContent = "Player " + currentTurn + " Turn";
+  diceRolled = true;
+  document.getElementById("rollBtn").disabled = true;
+  showToast(`${turn.toUpperCase()} rolled a ${lastDiceVal}!`);
+
+  // Check if player has any valid moves
+  let hasValidMove = tokens[turn].some(pos => {
+    if (pos === -1) return lastDiceVal === 6; // Can only leave base on 6
+    return (pos + lastDiceVal) <= 51; // Max track limit
+  });
+
+  if (!hasValidMove) {
+    showToast("No valid moves available. Turn skipped!");
+    setTimeout(nextTurn, 1500);
+  } else {
+    renderBoard();
+    updateTurnUI();
+  }
 };
+
+// Token Movement Logic
+function handleTokenClick(color, idx) {
+  if (!diceRolled) {
+    showToast("⚠️ Roll the dice first!");
+    return;
+  }
+  if (color !== turn) {
+    showToast(`⚠️ It's ${turn.toUpperCase()}'s turn!`);
+    return;
+  }
+
+  let pos = tokens[color][idx];
+
+  // If token is in base
+  if (pos === -1) {
+    if (lastDiceVal === 6) {
+      tokens[color][idx] = 0; // Move out to track start
+      showToast(`${color.toUpperCase()} token entered the game! 🎉`);
+      finishMove();
+    } else {
+      showToast("❌ You need a 6 to open a token from base!");
+    }
+    return;
+  }
+
+  // If token is on track
+  let newPos = pos + lastDiceVal;
+  if (newPos > 51) {
+    showToast("❌ Exact roll required to complete path!");
+    return;
+  }
+
+  tokens[color][idx] = newPos;
+  showToast(`${color.toUpperCase()} token advanced to position ${newPos}!`);
+
+  if (newPos === 51) {
+    showToast(`🏆 ${color.toUpperCase()} token reached home safely!`);
+  }
+
+  finishMove();
+}
+
+function finishMove() {
+  diceRolled = false;
+  document.getElementById("rollBtn").disabled = false;
+  renderBoard();
+  
+  // If player rolled a 6, they get an extra turn
+  if (lastDiceVal === 6) {
+    showToast(`🎉 Lucky 6! ${turn.toUpperCase()} gets another turn!`);
+    updateTurnUI();
+    return;
+  }
+
+  nextTurn();
+}
+
+function nextTurn() {
+  const sequence = ['red', 'green', 'yellow', 'blue'];
+  let currentIndex = sequence.indexOf(turn);
+  turn = sequence[(currentIndex + 1) % sequence.length];
+  diceRolled = false;
+  document.getElementById("rollBtn").disabled = false;
+  updateTurnUI();
+  renderBoard();
+}
 </script>
 
 </body>
